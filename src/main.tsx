@@ -20,6 +20,7 @@ import   Resguardo from './routes/servicios/servicio-resguardo.tsx'
 //proyectos paginas
 
 import ProyectosEjemplo from './routes/proyectos/proyecto1.tsx'
+
 const router = createHashRouter([
   {
     path: '/',
@@ -80,7 +81,7 @@ const router = createHashRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  <RouterProvider>
     <RouterProvider router={router} />
-  </React.StrictMode>,
+  </RouterProvider>,
 )
