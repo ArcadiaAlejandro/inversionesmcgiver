@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
-import conversacion from '../../assets/img/gif/pregunta.gif'
+import React, { useState, useRef, useEffect } from 'react';
+import Storage  from '../../firebase/firebase';
+import { ref, getDownloadURL } from 'firebase/storage';
+
 
 type FAQSubSubItem = {
   question: string;
@@ -148,6 +150,22 @@ const FAQ_DATA: FAQItem[] = [
 ];
 
 const Section3: React.FC = () => {
+
+  const [conversacion, setconversacion] = useState('');
+
+  useEffect(() => {
+  // Reemplaza 'videos/Video_Presentacion.mp4' con la ruta de tu video en Firebase
+  const videoRef = ref(Storage, 'https://firebasestorage.googleapis.com/v0/b/mcguiver-b7682.appspot.com/o/inversiones%2Fgif%2Fpregunta.gif?alt=media&token=ed675987-ebfc-4917-893c-f385640da829');
+  
+  getDownloadURL(videoRef)
+    .then((conversacion) => {
+      setconversacion(conversacion); // Guarda la URL en el estado
+    })
+    .catch((error) => {
+      console.error('Error al obtener el logo', error);
+    });
+}, []);
+
     const [expanded, setExpanded] = useState<number | null>(null);
     const [expandedSub, setExpandedSub] = useState<{ [key: number]: number | null }>({});
     const faqRefs = useRef<Array<HTMLDivElement | null>>([]);

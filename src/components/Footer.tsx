@@ -1,6 +1,24 @@
-import logo from '../assets/img/svg/Logo.svg';
+import { useEffect, useState } from 'react';
+import Storage  from '../firebase/firebase';
+import { ref, getDownloadURL } from 'firebase/storage';
 
 const Footer = () => {
+
+    const [logo, setlogo] = useState('');
+
+    useEffect(() => {
+    // Reemplaza 'videos/Video_Presentacion.mp4' con la ruta de tu video en Firebase
+    const videoRef = ref(Storage, 'https://firebasestorage.googleapis.com/v0/b/mcguiver-b7682.appspot.com/o/inversiones%2Fsvg%2FLogo.svg?alt=media&token=02165639-42b9-40c6-8f5c-4a332ab352b5');
+    
+    getDownloadURL(videoRef)
+      .then((logo) => {
+        setlogo(logo); // Guarda la URL en el estado
+      })
+      .catch((error) => {
+        console.error('Error al obtener el logo', error);
+      });
+  }, []);
+
   return (
     <>
         <footer className="bg-[#1C1C1C]">

@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/img/svg/Logo.svg';
+
+import Storage  from '../firebase/firebase';
+import { ref, getDownloadURL } from 'firebase/storage';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,6 +15,21 @@ const Header = () => {
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const [logo, setlogo] = useState('');
+
+  useEffect(() => {
+  // Reemplaza 'videos/Video_Presentacion.mp4' con la ruta de tu video en Firebase
+  const videoRef = ref(Storage, 'https://firebasestorage.googleapis.com/v0/b/mcguiver-b7682.appspot.com/o/inversiones%2Fsvg%2FLogo.svg?alt=media&token=02165639-42b9-40c6-8f5c-4a332ab352b5');
+  
+  getDownloadURL(videoRef)
+    .then((logo) => {
+      setlogo(logo); // Guarda la URL en el estado
+    })
+    .catch((error) => {
+      console.error('Error al obtener el logo', error);
+    });
+}, []);
 
   return (
     <nav className="bg-white border-gray-200 fixed top-0 left-0 right-0 shadow-md z-50">
@@ -109,7 +126,16 @@ const Header = () => {
                 to="/Contacto"
                 className="block py-2 px-3 text-black hover:text-gray-700 hover:border-b-2 hover:border-red-500 md:hover:bg-transparent md:p-0"
               >
-                Contactanos
+                Contáctanos
+              </Link>
+            </li>
+            {/* Botón de inicio de sesión */}
+            <li>
+              <Link
+                to="/Login"
+                className="block py-2 px-3 text-black hover:text-gray-700 hover:bg-blue-100 md:hover:bg-transparent md:p-1 bg-blue-900 text-white rounded-md"
+              >
+                Iniciar Sesión
               </Link>
             </li>
           </ul>
@@ -119,7 +145,7 @@ const Header = () => {
         id="mega-menu-full-dropdown"
         className={`mt-1 border-gray-200 shadow-sm bg-white md:bg-white border-y ${isDropdownOpen ? 'block' : 'hidden'}`}
       >
-        <div className="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:px-6 ">
+        <div className="grid max-w-screen-xl px-4 py-5 mx-auto text-gray-900 dark:text-white sm:grid-cols-2 md:px-6">
           <ul>
             <li>
               <Link

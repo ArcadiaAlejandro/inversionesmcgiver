@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 
 import Section1 from '../../resources/Inicio/Section1'
 import Section2 from '../../resources/Inicio/Section2'
@@ -10,6 +11,11 @@ import Section7 from '../../resources/Inicio/Section7'
 import Header from '../../components/header'
 import Footer from '../../components/Footer'
 export default function Route(){
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+
     return (
     <>
         <Header/>

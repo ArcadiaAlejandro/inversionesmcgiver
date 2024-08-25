@@ -1,15 +1,39 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faProjectDiagram } from '@fortawesome/free-solid-svg-icons';
-import Animacion from '../../assets/img/gif/trabajo.gif';
-import { useState } from 'react';
+
+import Storage  from '../../firebase/firebase';
+import { ref, getDownloadURL } from 'firebase/storage';
+
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+
+const clientes: string[] = [
+    'TELECOMUNICATIONS ',
+    'TORRESUNIDAS ',
+    'AESA ',
+    'ATP ',
+    'BECHTEL ',
+    'BTS ',
+    'CyJ',
+    'GRUPOABCINGENIEROS ',
+    'GRUPOGRAÑAYMONTERO ',
+    'INCORP ',
+    'JJCGRUPO ',
+    'OHL',
+    'RCPSAC ',
+    'SCINGENERIAYCONSTRUCCION',
+    'INGENIEROSDEPROYECTOSSAC ',
+    'SOLUCIONESALIMENTICIASSAC ',
+    'TURRISTELECOM ',
+    'XSTRATACOPPER ',
+];
 
 const projectsData = [
     {
         title: 'Proyecto de Talara',
         description: 'Un innovador proyecto de infraestructura en la región de Talara.',
         imgSrc: 'https://images.unsplash.com/photo-1625722662233-297060231b85?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fFBST1lFQ1RPUyUyMFRFTEVDT01VTklDQUNJT05FU3xlbnwwfHwwfHx8MA%3D%3D',
-        days: '30 días calendarios',
+        cliente: clientes[0], // Asignar el primer cliente
         startDate: '14/05/2024',
         category: 'Construcción y Diseño',
         link: '/Proyectos/ejemplo'
@@ -18,7 +42,7 @@ const projectsData = [
         title: 'Servicio de Telecomunicaciones',
         description: 'Desarrollo de soluciones avanzadas en telecomunicaciones.',
         imgSrc: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDEyfHx8ZW58MHx8fHx8',
-        days: '20 días calendarios',
+        cliente: clientes[1], // Asignar el segundo cliente
         startDate: '01/01/2024',
         category: 'Mantenimiento en Telecomunicaciones',
         link: '/Proyectos/ejemplo'
@@ -27,11 +51,12 @@ const projectsData = [
         title: 'Proyecto Acobamba',
         description: 'Un ambicioso proyecto de desarrollo urbano en Acobamba.',
         imgSrc: 'https://images.unsplash.com/photo-1527199768775-bdabf8b32f61?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        days: '10 días calendarios',
+        cliente: clientes[2], // Asignar el tercer cliente
         startDate: '14/09/2023',
         category: 'Transporte y Alquileres',
         link: '/Proyectos/ejemplo'
     }
+    // Agrega más proyectos aquí y asigna más clientes si es necesario
 ];
 
 const categories = [
@@ -44,6 +69,23 @@ const categories = [
 ];
 
 const Section1 = () => {
+
+
+    const [Animacion, setAnimacion] = useState('');
+
+  useEffect(() => {
+  // Reemplaza 'videos/Video_Presentacion.mp4' con la ruta de tu video en Firebase
+  const videoRef = ref(Storage, 'https://firebasestorage.googleapis.com/v0/b/mcguiver-b7682.appspot.com/o/inversiones%2Fgif%2Ftrabajo.gif?alt=media&token=e590b8cf-1589-44ae-916f-6b06e0f00c3b');
+  
+  getDownloadURL(videoRef)
+    .then((Animacion) => {
+        setAnimacion(Animacion); // Guarda la URL en el estado
+    })
+    .catch((error) => {
+      console.error('Error al obtener el logo', error);
+    });
+}, []);
+
     const [selectedCategory, setSelectedCategory] = useState('Todos');
 
     const filteredProjects = selectedCategory === 'Todos'
@@ -128,14 +170,14 @@ const Section1 = () => {
                                             icon={faBriefcase}
                                             className="h-5 w-5 text-gray-600 mr-1"
                                         />
-                                        <span className="ml-1">{project.days}</span>
+                                        <span className="ml-1">{project.cliente}</span>
                                     </span>
                                     <span className="py-1 text-xs font-regular text-gray-900 mr-1 flex flex-row items-center">
                                         <FontAwesomeIcon
                                             icon={faProjectDiagram}
                                             className="h-5 w-5 text-gray-600 mr-1"
                                         />
-                                        <span className="ml-1">Fecha de Inicio: {project.startDate}</span>
+                                        <span className="ml-1">Fecha: {project.startDate}</span>
                                     </span>
                                 </div>
                             </div>
